@@ -1,7 +1,6 @@
 \begin{tikzpicture}
     \foreach \i in {0,...,4}
-        \node[draw,circle,fill=DodgerBlue3!20]
-            (pub\i) at (0,\i*.6) {PUB\i};
+        \node (pub\i) at (0,\i*.6) {};
 
     \node[draw,fill=yellow!20] (broker)
         at ($(pub2)+(3,0)$) {Broker};
@@ -13,14 +12,11 @@
 
 
     \foreach \i in {0,...,4}{
-        \draw[->] (pub\i.east) --
-            node[above,midway] (puba\i) {}
-            (broker.west);
         \draw[->] (broker.east) --
             node[above,midway] (suba\i) {}
             (subs\i.west);
     }
 
-    \node[rotate=-45] at (puba4.north) {publish};
-    \node[rotate=40] at (suba4.north) {subscribe};
+    \node[rotate=40] at (suba4.north)
+        {\texttt{PUBLISH}};
 \end{tikzpicture}

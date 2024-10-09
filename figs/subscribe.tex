@@ -1,0 +1,20 @@
+\begin{tikzpicture}
+    \node[draw,fill=yellow!20]
+        (broker) at (0,0) {Broker};
+
+    \node[draw,circle,fill=Firebrick3!20]
+        (subs)
+        at ($(broker)+(9,0)$) {SUB};
+
+
+
+    \draw[->] (subs.west) --
+        node[midway,above,draw,align=center]
+        (pubmsg)
+        {SUBSCRIBE\\
+        Topics:\\
+        {\color{Firebrick3}Madrid}/{\color{Gold3}Comillas}/{\color{DodgerBlue3}Laura}/{\color{OliveDrab4}Pulso}\\
+        {\color{Firebrick3}Madrid}/{\color{Gold3}Comillas}/{\color{DodgerBlue3}Laura}/{\color{OliveDrab4}Presión}}
+        (broker.east);
+
+\end{tikzpicture}

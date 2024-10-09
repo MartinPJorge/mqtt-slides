@@ -1,0 +1,76 @@
+\begin{tikzpicture}
+    \node[draw,fill=OliveDrab3!20]
+        (prele) at (0,0) {Presión};
+    \node[draw,fill=OliveDrab3!20,
+        anchor=west]
+        (pulsole) at
+        ($(prele.east)+(.1,0)$)
+        {Pulso};
+    \node[draw,fill=OliveDrab3!20,
+        anchor=west]
+        (preri) at
+        ($(pulsole.east)+(.1,0)$)
+        {Presión};
+    \node[draw,fill=OliveDrab3!20,
+        anchor=west]
+        (pulsori) at
+        ($(preri.east)+(.1,0)$)
+        {Pulso};
+
+    \node[draw,fill=DodgerBlue3!20,
+        anchor=south]
+        (laura)
+        at
+        ($(prele)+(.5,.75)$)
+        {Laura};
+    \node[draw,fill=DodgerBlue3!20,
+        anchor=south]
+        (sofia)
+        at
+        ($(preri)+(.5,.75)$)
+        {Sofía};
+
+
+
+    \node[draw,fill=Gold2!20,
+        anchor=south]
+        (comillas)
+        at
+        ($(laura)+(.5,.75)$)
+        {Comillas};
+    \node[draw,fill=Gold2!20,
+        anchor=west]
+        (alcorcon)
+        at
+        ($(comillas.east)+(.5,0)$)
+        {Alcorcón};
+
+    \node[draw,fill=Firebrick3!20,
+        anchor=south]
+        (madrid)
+        at
+        ($(comillas)+(.5,.75)$)
+        {Madrid};
+
+
+    \draw (madrid.south) -- (comillas.north);
+    \draw (madrid.south) -- (alcorcon.north);
+    \draw (comillas.south) -- (laura.north);
+    \draw (comillas.south) -- (sofia.north);
+    \draw (alcorcon.south) -- (sofia.north);
+    \draw (laura.south) -- (prele.north);
+    \draw (laura.south) -- (pulsole.north);
+    \draw (sofia.south) -- (preri.north);
+    \draw (sofia.south) -- (pulsori.north);
+
+        
+    \draw[ultra thick] (madrid.south)
+        to[out=-10,in=90]
+        (alcorcon.north)
+        to[out=-90,in=90]
+        (pulsori.north);
+    \draw[ultra thick] (madrid.south)
+        to[out=-25,in=70]
+        (preri.north);
+
+\end{tikzpicture}

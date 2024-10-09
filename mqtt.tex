@@ -198,11 +198,171 @@
     \end{itemize}
     \vspace{1em}
     \begin{figure}
-        \input{figs/pub-subs-many}
+        \input{figs/pub-sub-many}
     \end{figure}
 \end{frame}
 
 
 
+
+\section{Topics}
+\begin{frame}{\secname}
+    Los \texttt{topics} son como ``buzones''
+    en los que se publican mensajes:
+    \begin{itemize}
+        \item tienen \textbf{jerarquía}.
+    \end{itemize}
+
+    \vspace{1em}
+
+    \begin{minipage}{.5\textwidth} %
+        {\color{Firebrick3}Madrid}/{\color{Gold3}Comillas}/{\color{DodgerBlue3}Laura}/{\color{OliveDrab4}Presión}
+        {\color{Firebrick3}Madrid}/{\color{Gold3}Comillas}/{\color{DodgerBlue3}Laura}/{\color{OliveDrab4}Pulso}
+        {\color{Firebrick3}Madrid}/{\color{Gold3}Comillas}/{\color{DodgerBlue3}Sofía}/{\color{OliveDrab4}Pulso}
+        {\color{Firebrick3}Madrid}/{\color{Gold3}Alcorcón}/{\color{DodgerBlue3}Sofía}/{\color{OliveDrab4}Pulso}
+    \end{minipage}
+    \begin{minipage}{.45\textwidth} %
+        \begin{figure}
+            \input{figs/topics-tree}
+        \end{figure}
+    \end{minipage}
+\end{frame}
+
+
+
+
+\begin{frame}{\secname}
+    \textbf{Single level wildcard (+)}:
+    nos permite sustituir un solo nivel.
+
+    \vspace{1em}
+
+    
+    \begin{minipage}{.51\textwidth} %
+        {\color{Firebrick3}Madrid}/{\color{Gold3}Alcorcón}/{\color{DodgerBlue3}\textbf{+}}/{\color{OliveDrab4}Pulso} resulta en:
+
+        \begin{itemize}
+            \item {\color{Firebrick3}Madrid}/{\color{Gold3}Alcorcón}/{\color{DodgerBlue3}\textbf{Sofía}}/{\color{OliveDrab4}Pulso}
+        \end{itemize}
+    \end{minipage}
+    \begin{minipage}{.4\textwidth} %
+        \begin{figure}
+            \input{figs/topics-tree-single-wildcard}
+        \end{figure}
+    \end{minipage}
+\end{frame}
+
+
+
+
+
+
+
+
+\begin{frame}{\secname}
+    \textbf{Multi level wildcard (\#)}:
+    nos permite sustituir muchos niveles.
+
+    \vspace{1em}
+
+    
+    \begin{minipage}{.51\textwidth} %
+        {\color{Firebrick3}Madrid}/{\color{Gold3}Alcorcón}/{\color{DodgerBlue3}\textbf{\#}} resulta en:
+
+        \begin{itemize}
+            \item {\color{Firebrick3}Madrid}/{\color{Gold3}Alcorcón}/{\color{DodgerBlue3}\textbf{Sofía}}/{\color{OliveDrab4}Pulso}
+            \item {\color{Firebrick3}Madrid}/{\color{Gold3}Alcorcón}/{\color{DodgerBlue3}\textbf{Sofía}}/{\color{OliveDrab4}Presión}
+        \end{itemize}
+    \end{minipage}
+    \begin{minipage}{.4\textwidth} %
+        \begin{figure}
+            \input{figs/topics-tree-multilevel-wildcard}
+        \end{figure}
+    \end{minipage}
+\end{frame}
+
+
+
+
+
+
+\section{PUBLISH}
+\begin{frame}{\secname}
+    El publisher envía información mediante
+    mensajes de tipo \texttt{PUBLISH}.
+
+    \vspace{1em}
+
+    \begin{figure}
+        \input{figs/publish}
+    \end{figure}
+    
+\end{frame}
+
+
+
+\begin{frame}{\secname}
+    El broker anuncia información
+    a los suscriptores con
+    mensajes \texttt{PUBLISH}.
+
+    \vspace{1em}
+
+    \begin{figure}
+        \input{figs/broker-publish}
+    \end{figure}
+\end{frame}
+
+
+
+\section{SUBSCRIBE}
+\begin{frame}{\secname}
+    Un dispositivo se suscribe a
+    un \texttt{topic} con
+    mensajes \texttt{SUBSCRIBE}.
+
+    \vspace{1em}
+
+    \begin{figure}
+        \input{figs/subscribe}
+    \end{figure}
+
+
+    \emph{Nota}: podríamos usar el wildcard
+    {\color{Firebrick3}Madrid}/{\color{Gold3}Alcorcón}/{\color{DodgerBlue3}Laura}/{\color{OliveDrab4}\textbf{+}}
+\end{frame}
+
+
+
+
+\begin{frame}{\secname}
+    En cuanto el broker recibe un
+    mensaje nuevo, lo publica a los
+    suscriptores.
+    \begin{figure}
+        \input{figs/subscribers}
+    \end{figure}
+\end{frame}
+
+
+
+
+\section{KEEPALIVE}
+\begin{frame}{\secname}
+    Los sensores sufren pérdidas de
+    conexión. Las detectamos con
+    \texttt{KEEPALIVE}.
+    
+    \begin{figure}
+        \input{figs/keepalive}
+    \end{figure}
+\end{frame}
+
+
+
+
 \end{document}
+
+
+
 

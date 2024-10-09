@@ -1,0 +1,40 @@
+\begin{tikzpicture}
+    \node[draw,fill=yellow!20]
+        (broker) at (0,0) {Broker};
+
+    \node[draw,circle,fill=Firebrick3!20]
+        (subs)
+        at ($(broker)+(9,0)$) {SUB};
+
+
+
+    \draw[->] (broker.east) --
+        node[midway,above,draw,align=center]
+        (pubmsg)
+        {PUBLISH\\
+        Topic:{\color{Firebrick3}Madrid}/{\color{Gold3}Comillas}/{\color{DodgerBlue3}Laura}/{\color{OliveDrab4}Pulso}\\
+        Message: 60\,\texttt{BMP}}
+        (subs.west);
+
+    \node[anchor=north] at
+        ($(broker.south)-(0,.5)$)
+    {
+        \scalebox{.5}{
+            \input{figs/topics-tree.tex}
+        }
+    };
+
+    \draw
+        (broker.south)
+        to[out=-130,in=90]
+        ($(broker)-(2,1)$)
+        to[out=-90,in=-180]
+        ($(broker)-(.7,3)$)
+        node[anchor=west,draw,inner sep=1]
+        (msgstore)
+        {\tiny Message}
+        ;
+
+    \draw[->]
+        (msgstore) -- ($(msgstore)+(0,.3)$);
+\end{tikzpicture}
