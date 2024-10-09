@@ -1,0 +1,208 @@
+\documentclass[xcolor={x11names}]{beamer}
+\usetheme{Madrid}
+
+\usepackage{amssymb}
+\usepackage{ulem}
+\usepackage[utf8]{inputenc}
+\usepackage{mathtools}
+\usepackage{multicol}
+%\usepackage[x11names]{xcolor}
+\usefonttheme{professionalfonts}
+
+
+% Subfigures
+\usepackage{caption}
+\usepackage{subcaption}
+
+
+% License
+\usepackage[
+    type={CC},
+    modifier={by-nc-sa},
+    version={4.0},
+    imagewidth=4pt
+]{doclicense}
+
+
+
+
+% Change base colour beamer@blendedblue (originally RGB: 0.2,0.2,0.7)
+% \colorlet{beamer@blendedblue}{DarkSeaGreen4}
+
+
+
+
+
+
+
+%% MATH commands
+\DeclareMathOperator{\Var}{Var}
+
+
+%% THEOREMS
+%\newtheorem{theorem}{Theorem}
+\newtheorem{thm}{Teorema}[section] % the main one
+% Definición
+%\theoremstyle{definition}
+\newtheorem{definicion}{Definición}[section]
+\newtheorem{lema}{Lema}[section]
+
+
+
+%% PFGplots %%
+\usepackage{pgfplots}
+
+%% Exponential distribution
+\pgfmathdeclarefunction{exponential}{1}{%
+  \pgfmathparse{(#1)*exp(-#1*x)}%
+}
+\pgfmathdeclarefunction{exponentialcdf}{1}{%
+  \pgfmathparse{1-exp(-#1*x)}%
+}
+
+%% Poisson distribution
+\pgfmathdeclarefunction{poiss}{1}{%
+  \pgfmathparse{(#1^x)*exp(-#1)/(x!)}%
+}
+
+%% Normal distribution (#1=mu, #2=sigma)
+% John D. Cook approx. https://tex.stackexchange.com/a/124629
+\pgfmathdeclarefunction{normalcdf}{2}{%
+  \pgfmathparse{1/(1 + exp(-0.07056*((x-#1)/#2)^3 - 1.5976*(x-#1)/#2))}%
+}
+
+
+
+
+\newcommand{\red}[1]{{\color{red}#1}}
+\newcommand{\blue}[1]{{\color{blue}#1}}
+
+%%%%%%%%%%
+%% TIKZ %%
+%%%%%%%%%%
+\usepackage{tikz}
+\usepackage{animate}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows, positioning, calc}
+\usetikzlibrary{overlay-beamer-styles}
+\usetikzlibrary{chains,shapes.multipart}
+\usetikzlibrary{scopes}
+\usetikzlibrary{automata}
+\usetikzlibrary{positioning}  %                 ...positioning nodes
+\usetikzlibrary{arrows}       %                 ...customizing arrows
+\usetikzlibrary{intersections}
+
+
+%%%%%%%%%
+%% PGF %%
+%%%%%%%%%
+\usepgfplotslibrary{fillbetween}
+
+
+%%% Insert section name before the section %%%
+\AtBeginSection[]{
+  \begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}\insertsectionhead\par%
+  \end{beamercolorbox}
+  \vfill
+  \end{frame}
+}
+
+
+
+\title[MQTT]{MQTT: fundamentos del protocolo}
+%% \subtitle{Redes y Servicios de Telecomunicaciones (RSTC)\\
+%% Grado en Ingeniería de Tecnologías y Servicios de Telecomunicación}
+%\author{M. Saiful Bari\inst{1} \and Mr X\inst{2}}
+\titlegraphic{%
+\doclicenseIcon {\tiny \hspace{1em}\doclicenseText}
+}
+
+\author{\textcolor{white}{RSER curso 2024-2025}}
+%\author{Jorge Martín Pérez\inst{1}}
+%\institute{
+%    \inst{1}
+%    Departamento de Ingeniería Telemática, Universidad Politécnica de Madrid
+%}
+
+\date{\today}
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%
+%%% SLIDES START %%%
+%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+
+%%% TITLE %%%
+\frame{\titlepage }
+
+
+\begin{frame}[allowframebreaks]{Contenido}
+    \tableofcontents
+\end{frame}
+
+
+
+
+\section{Introducción}
+\begin{frame}{\secname}
+    MQTT (Message Queuing Telemetry Transport)
+    se utiliza para:
+    \begin{itemize}
+        \item transportar mensajes (e.g. pulsaciones);
+        \item utilizando esquema \textbf{publish/subscribe}.
+    \end{itemize}
+
+    \vfill
+    Vamos a ver:
+    \begin{itemize}
+        \item en qué consiste el \textbf{publish/subscribe}; y
+        \item cómo funciona el protocolo.
+    \end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}{\secname}
+    Entidades modelo publish/subscribe:
+    \begin{itemize}
+        \item \textbf{Publisher}: publica mensajes,
+            e.g. 60\,\textrm{BPM};
+        \item \textbf{Broker}: recibe, almacena, y envía mensajes;
+        \item \textbf{Subscriber}: recibe mensajes.
+    \end{itemize}
+    \vspace{1em}
+    \begin{figure}
+        \input{figs/pub-subs}
+    \end{figure}
+\end{frame}
+
+
+
+\begin{frame}{\secname}
+    En qué casos se usa publish/subscribe:
+    \begin{itemize}
+        \item comunicaciones tolerantes a \textbf{latencias};
+        \item escenarios con \textbf{muchos dispositivos}
+            (escalabilidad).
+    \end{itemize}
+    \vspace{1em}
+    \begin{figure}
+        \input{figs/pub-subs-many}
+    \end{figure}
+\end{frame}
+
+
+
+\end{document}
+
