@@ -1,0 +1,10 @@
+\usetikzlibrary{backgrounds,calc,positioning}
+\begin{tikzpicture}
+    \node[rectangle,draw,minimum width=10,fill=DodgerBlue3!20]
+        (mqtt) {MQTT};
+    \node[rectangle,draw,anchor=north,fill=yellow!20,
+        minimum width={width("MQTT")+5pt}]
+        (tcp) at (mqtt.south) {TCP};
+    \node[rectangle,draw,anchor=north,fill=Firebrick3!20,
+        minimum width={width("MQTT")+5pt}] (ip) at (tcp.south) {IP};
+\end{tikzpicture}

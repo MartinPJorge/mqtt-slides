@@ -1,0 +1,25 @@
+\begin{tikzpicture}
+    \node[draw,fill=DodgerBlue3!20,align=center]
+        (pktype)
+        {Packet Type\\
+        (4\,\textrm{bits})};
+    \node[draw,fill=DodgerBlue3!20,align=center,anchor=west]
+        (flag)
+        at
+        (pktype.east)
+        {Flag\\
+        (4\,\textrm{bits})};
+    \node[draw,fill=DodgerBlue3!20,align=center,anchor=west]
+        (vheader)
+        at
+        (flag.east)
+        {Variable Header\\
+        (N\,\textrm{Bytes})};
+    \node[draw,fill=DodgerBlue3!20,align=center,anchor=west]
+        (payload)
+        at
+        (vheader.east)
+        {Variable Payload\\
+        (N\,\textrm{Bytes})};
+
+\end{tikzpicture}

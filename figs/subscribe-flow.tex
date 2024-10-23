@@ -1,0 +1,33 @@
+\begin{tikzpicture}
+    \node[draw,fill=yellow!20] (broker)
+        at (0,0) {Broker};
+
+    \node[draw,circle,fill=Firebrick3!20]
+        (sub1) at ($(broker)+(5,0)$) {SUB};
+
+    \draw
+        (sub1)
+        --
+        ($(sub1.south)-(0,1.4)$)
+        ;
+    \draw
+        (broker)
+        --
+        ($(broker.south)-(0,1.7)$)
+        ;
+
+
+    \draw[->]
+        ($(sub1)-(0,.7)$)
+        --
+        node[midway,above]
+        {\texttt{SUBSCRIBE}}
+        ($(broker)-(0,.7)$)
+        ;
+    \draw[->]
+        ($(broker)-(0,1.4)$)
+        --
+        node[midway,above] {\texttt{SUBACK}}
+        ($(sub1)-(0,1.4)$)
+        ;
+\end{tikzpicture}

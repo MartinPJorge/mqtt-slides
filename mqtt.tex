@@ -9,6 +9,32 @@
 %\usepackage[x11names]{xcolor}
 \usefonttheme{professionalfonts}
 
+% Code
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\usepackage{listings}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+\lstset{style=mystyle}
+
 
 % Subfigures
 \usepackage{caption}
@@ -116,7 +142,6 @@
 \title[MQTT]{MQTT: fundamentos del protocolo}
 %% \subtitle{Redes y Servicios de Telecomunicaciones (RSTC)\\
 %% Grado en Ingeniería de Tecnologías y Servicios de Telecomunicación}
-%\author{M. Saiful Bari\inst{1} \and Mr X\inst{2}}
 \titlegraphic{%
 \doclicenseIcon {\tiny \hspace{1em}\doclicenseText}
 }
@@ -357,6 +382,392 @@
         \input{figs/keepalive}
     \end{figure}
 \end{frame}
+
+
+\begin{frame}{\secname}
+    La conexión puede perderse del
+    lado del suscriptor.
+    \begin{figure}
+        \input{figs/keepalive-lost-subs}
+    \end{figure}
+
+    La conexión puede perderse del
+    lado del broker.
+    \begin{figure}
+        \input{figs/keepalive-lost-broker}
+    \end{figure}
+\end{frame}
+
+
+
+\section{Formato Cabecera \& Flujos}
+\begin{frame}{\secname}
+    Campos de la cabecera MQTT:
+    \begin{itemize}
+        \item Packet Type: si es un PUBLISH, SUBSCRIBE, etc.;
+        \item Flag: si el mensaje es duplicado y su QoS;
+        \item Variable Header: cabeceras extra; y
+        \item Variable Payload: el mensaje(s) como e.g. 
+            60\,\textrm{BPM};
+    \end{itemize}
+    \begin{figure}
+        \input{figs/header}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}{\secname}
+    Establecimiento de \textbf{conexión}:
+    \begin{figure}
+        \input{figs/connect}
+    \end{figure}
+    El mensaje \texttt{CONNECT} contiene
+    información sobre:
+    \begin{itemize}
+        \item \texttt{clientId}: identificador de cliente;
+        \item \texttt{keepAlive}: cada cuánto se comprueba
+            conexión; y
+        \item \texttt{lastQoS}: QoS deseada.
+    \end{itemize}
+\end{frame}
+
+
+
+
+
+\begin{frame}{\secname}
+    PINGs para comprobar si está vivo (el Keepalive).
+    \begin{figure}
+        \input{figs/keepalive-flow}
+    \end{figure}
+    Se intercambian:
+    \begin{itemize}
+        \item \texttt{PINGREQ}: pregunta para comprobar conexión;
+        \item \texttt{PINGREP}: respuesta confirmando recepción.
+    \end{itemize}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}{\secname}
+    \textbf{Suscripción} a un \texttt{topic}:
+    \begin{figure}
+        \input{figs/subscribe-flow}
+    \end{figure}
+    Como hemos visto, el \texttt{SUBSCRIBE}
+    indica uno/varios \texttt{topics}:
+    \begin{itemize}
+        \item {\color{Firebrick3}Madrid}/{\color{Gold3}Comillas}/{\color{DodgerBlue3}\#}
+        \item {\color{Firebrick3}Madrid}/{\color{Gold3}Comillas}/{\color{DodgerBlue3}Laura}/{\color{OliveDrab4}Pulso}
+    \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{\secname}
+    \textbf{Eliminar suscripción} a un \texttt{topic}:
+    \begin{figure}
+        \input{figs/unsubscribe-flow}
+    \end{figure}
+    El \texttt{UNSUBSCRIBE} indica uno/varios
+    \texttt{topics}
+    \begin{itemize}
+        \item {\color{Firebrick3}Madrid}/{\color{Gold3}Comillas}/{\color{DodgerBlue3}Laura}/{\color{OliveDrab4}Presión}
+        \item {\color{Firebrick3}Madrid}/{\color{Gold3}Comillas}/{\color{DodgerBlue3}+}/{\color{OliveDrab4}Pulso}
+    \end{itemize}
+\end{frame}
+
+
+
+
+
+\begin{frame}{\secname}
+    \textbf{Publicación} de información.
+    \begin{figure}
+        \input{figs/publish-qos0-flow}
+    \end{figure}
+    \emph{Pregunta}: ¿y si se pierde
+    el mensaje \texttt{PUBLISH}?
+\end{frame}
+
+
+
+\section{QoS: Quality of Service}
+\begin{frame}{\secname}
+    MQTT permite tres niveles de calidad de servicio:
+    \begin{itemize}
+        \item \textbf{QoS 0}: puede haber pérdidas;
+        \item \textbf{QoS 1}: llega el mensaje; y
+        \item \textbf{QoS 2}: llega el mensaje sin duplicados.
+    \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{\secname}
+    \textbf{QoS 0}: no se reenvían mensajes perdidos.
+    \begin{figure}
+        \input{figs/publish-qos0-lost}
+    \end{figure}
+\end{frame}
+
+
+
+\begin{frame}{\secname}
+    \textbf{QoS 1}: se reenvía si no hay \texttt{PUBACK}.
+    \begin{figure}
+        \input{figs/publish-qos1-lost}
+    \end{figure}
+\end{frame}
+
+
+
+\begin{frame}{\secname}
+    \textbf{QoS 1}: si se pierde \texttt{PUBACK}, se retransmite.
+    \begin{figure}
+        \input{figs/publish-qos1-lost-puback}
+    \end{figure}
+    El mensaje 15 se recibe y procesa \emph{dos veces}.
+\end{frame}
+
+
+
+\begin{frame}{\secname}
+    \textbf{QoS 1}: procesa como nuevo cada \texttt{DUP=1}.
+    \begin{figure}
+        \input{figs/publish-qos1-lost-diff}
+    \end{figure}
+    El último PUBLISH es procesado como
+    nuevo, si no se descarta pensando
+    que es otro `A'.
+\end{frame}
+
+
+
+\begin{frame}{\secname}
+    \textbf{QoS 1}: puede dar pie a mucho procesado duplicado.
+    \begin{figure}
+        \resizebox{.9\textwidth}{!}{
+            \input{figs/publish-qos1-many-dups}
+        }
+    \end{figure}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}{\secname}
+    \textbf{QoS 2}: se garantiza \emph{único} procesado.
+
+    \begin{figure}
+        \resizebox{.7\textwidth}{!}{
+            \input{figs/publish-qos2}
+        }
+    \end{figure}
+
+    \begin{itemize}
+        \item PUBREC: notifica la recepción;
+        \item PUBREL: notifica liberar el Pkt ID; y
+        \item PUBCOMP: notifica el fin de la transmisión.
+    \end{itemize}
+\end{frame}
+
+
+\section{Pila de Protocolos}
+\begin{frame}{\secname}
+    MQTT (nivel aplicación) funciona sobre la pila TCP/IP:
+    \begin{itemize}
+        \item TCP: protocolo de transporte; y
+        \item IP: protocolo de red (las direcciones).
+    \end{itemize}
+    \begin{figure}
+        \input{figs/pila}
+    \end{figure}
+
+    TCP garantiza envío mediante
+    \texttt{tcp\_retries2}=15 reintentos.
+\end{frame}
+
+
+
+
+\section{Detalles Analíticos}
+\begin{frame}{\secname}
+    Suponga que se envía \texttt{PUBLISH}
+    (QOS 0)
+    cada $T$\,\textrm{sec}.
+    Si $p$ es la probabilidad de éxito
+    en transmisión, ¿cuál es el tiempo
+    medio entre \texttt{PUBLISH}es
+    recibidos con éxito?
+
+    \begin{equation}
+        \mathbb{E}[\text{IPG}] =
+        \sum_{i=1}^\infty i T p(1-p)^{i-1}
+        = \frac{Tp}{1-p}\sum_{i=1}^\infty i(1-p)^i
+        = \frac{T}{p}
+    \end{equation}
+
+    \emph{Nota}: IPG apela al \textit{inter-packet gap}.
+\end{frame}
+
+
+
+\begin{frame}{\secname}
+    Si la conexión está apagada un tiempo
+    $t\sim exp(\lambda)$, ¿cuál es el
+    número medio de mensajes \texttt{PUBLISH}
+    perdidos $M$ con QoS 0?
+
+    \begin{equation}
+        \mathbb{E}[M]=\sum_{i=1}^\infty i \mathbb{P}(t>iT)
+        =\sum_i^{\infty} i e^{-\lambda iT}
+        =\frac{e^{-\lambda T}}{(e^{-\lambda T}-1)^2}
+    \end{equation}
+
+
+    \begin{figure}
+\begin{tikzpicture}[scale=.5]
+    \begin{axis}[ymode=log,xlabel={$\lambda$},ylabel={$\mathbb{E}[M]$},grid=major]
+    \addplot[domain=0:10,line width=3,color=DodgerBlue4]
+        {exp(-x*2)/(exp(-x*2)-1)^2};
+\end{axis}
+\end{tikzpicture}
+
+\emph{Nota}: $\lambda$ es la inversa del tiempo sin conexión.
+\end{figure}
+
+
+\end{frame}
+
+
+
+
+
+\section{Manos a la Obra con \texttt{Mosquitto}}
+\begin{frame}{\secname}
+    \texttt{Mosquitto} es un broker de MQTT. Provee de:
+    \begin{itemize}
+        \item clientes por línea de comando; y
+        \item una librería en \texttt{C} para
+            programar clientes.
+    \end{itemize}
+    Existen otras librerías como \texttt{Paho}
+    para el lenguaje \texttt{Python}.
+\end{frame}
+
+
+
+\begin{frame}[fragile]{\secname}
+    En primer lugar tenemos que instalar
+    los paquetes en la máquina virtual:
+\begin{lstlisting}[language=bash]
+$ sudo apt install -y mosquitto
+$ sudo apt install -y mosquitto-clients
+\end{lstlisting}
+
+    Ahora inicie el servicio 
+    del broker y compruebe su estado:
+\begin{lstlisting}[language=bash]
+$ sudo service mosquitto start 
+$ sudo service mosquitto status 
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]{\secname}
+    Ahora creamos un cliente que
+    se \textbf{suscriba} a un \texttt{topic}:
+\begin{lstlisting}[language=bash]
+$ mosquitto_sub -V mqttv311 -t Madrid/Moncloa/__Nombre__ -d
+\end{lstlisting}
+sustituye \verb|__Nombre__| por el tuyo.
+
+
+Inicie una captura \texttt{wireshark} antes
+de ejecutar la línea. Busque:
+\begin{enumerate}
+    \item mensaje \texttt{CONNECT};
+    \item mensaje \texttt{CONNACK};
+    \item el ID del cliente;
+    \item QoS indicada;
+    \item los mensajes \texttt{SUBSCRIBE} \& \texttt{SUBACK}; y
+    \item mensajes \texttt{Keepalive} (los \texttt{PING}s).
+\end{enumerate}
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{frame}[fragile]{\secname}
+    Ahora \textbf{publicamos} en el \texttt{topic}
+    {\color{Firebrick3}Madrid}/{\color{Gold3}Moncloa}/{\color{DodgerBlue3}Nombre}/{\color{OliveDrab4}Pulso}:
+\begin{lstlisting}[language=bash]
+$ mosquitto_pub -V mqttv311\
+   -t Madrid/Moncloa/__Nombre__/Pulso -m "60%" -d
+\end{lstlisting}
+
+
+sustituye \verb|__Nombre__| por el tuyo
+y ejecuta en \emph{otra terminal}. Busque:
+\begin{enumerate}
+    \item el \texttt{PUBLISH};
+    \item QoS indicada; y
+    \item el campo \texttt{Message}.
+\end{enumerate}
+
+\vspace{1em}
+
+\emph{Pregunta}: ¿por qué no sale 60 en \texttt{Message}?
+
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]{\secname}
+    Ahora creamos un cliente que publique
+    con QoS 1:
+\begin{lstlisting}[language=bash]
+$ mosquitto_sub  -V mqttv311\
+    -t Madrid/Moncloa/__Nombre__/Pulso -d\
+    -q 1 -c -i 'client-qos1'
+\end{lstlisting}
+Vuelva a capturar con \texttt{wireshark} y busque
+\begin{enumerate}
+    \item el \texttt{PUBLISH}; y
+    \item el \texttt{PUBACK}.
+\end{enumerate}
+
+Repita el proceso con QoS 2 y busque:
+\begin{enumerate}
+    \item el \texttt{PUBLISH};
+    \item el \texttt{PUBREC}; 
+    \item el \texttt{PUBREL}; y
+    \item el \texttt{PUBCOMP}.
+\end{enumerate}
+\end{frame}
+
 
 
 

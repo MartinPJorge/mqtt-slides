@@ -1,0 +1,19 @@
+\begin{tikzpicture}
+    \node[draw,fill=yellow!20]
+        (broker) at (0,0) {Broker};
+    \node[draw,circle,fill=Firebrick3!20]
+        (subs)
+        at ($(broker)+(9,0)$) {SUB};
+
+
+    \draw[->] 
+        (subs.west)
+        --
+        node[midway,above,Firebrick4]
+        {¿Estás viva?}
+        ($(broker.east)+(4,0)$)
+        node[pos=1,Firebrick4,anchor=east]
+        {\textbf{X}};
+
+
+\end{tikzpicture}

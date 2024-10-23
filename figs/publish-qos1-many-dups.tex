@@ -1,0 +1,121 @@
+\begin{tikzpicture}
+    \node[draw,circle,fill=DodgerBlue3!20]
+        (pub1) at (0,0) {PUB};
+
+    \node[draw,fill=yellow!20] (broker)
+        at ($(pub1)+(6,0)$) {Broker};
+
+    \node[draw,circle,fill=Firebrick3!20]
+        (sub1)
+        at ($(pub1)+(11,0)$) {SUB};
+
+
+    \draw
+        (pub1)
+        --
+        ($(pub1.south)-(0,4.5)$)
+        ;
+    \draw
+        (broker)
+        --
+        ($(broker.south)-(0,5)$)
+        ;
+    \draw
+        (sub1)
+        --
+        ($(sub1.south)-(0,4.5)$)
+        ;
+
+
+    \draw[->]
+        ($(pub1)-(0,1)$)
+        --
+        node[midway,above] {\small\texttt{PUBLISH,Pkt ID=15,DUP=0,`A'}}
+        ($(broker)-(0,1)$)
+        ;
+
+    \draw[->]
+        ($(broker)-(0,1.3)$)
+        --
+        node[midway,above] {\small\texttt{PUBLISH,Pkt ID=15,DUP=0,`A'}}
+        ($(sub1)-(0,1.3)$)
+        node[draw,anchor=west,circle,fill=OliveDrab3!20,
+        inner sep=1]
+        (ok1)
+        {OK}
+        ;
+    \draw[->]
+        ($(sub1)-(0,1.8)$)
+        --
+        node[midway,above] {\small\texttt{PUBACK,Pkt ID=15}}
+        ($(broker)-(0,1.8)$)
+        ;
+
+
+    \draw[->]
+        ($(broker)-(0,2)$)
+        --
+        node[midway,above] {\texttt{PUBACK,Pkt ID=15}}
+        ($(pub1)-(-1,2)$)
+        node[anchor=east,Firebrick3]
+        {\textbf{X}}
+        ;
+
+    \draw[->]
+        ($(pub1)-(0,3)$)
+        --
+        node[midway,above] {\small\texttt{PUBLISH,Pkt ID=15,DUP=1,`A'}}
+        ($(broker)-(0,3)$)
+        ;
+    \draw[->]
+        ($(broker)-(0,3.3)$)
+        --
+        node[midway,above] {\small\texttt{PUBLISH,Pkt ID=15,DUP=1,`A'}}
+        ($(sub1)-(0,3.3)$)
+        node[draw,anchor=west,circle,fill=OliveDrab3!20,
+        inner sep=1]
+        (ok2)
+        {OK}
+        ;
+    \draw[->]
+        ($(sub1)-(0,3.8)$)
+        --
+        node[midway,above] {\small\texttt{PUBACK,Pkt ID=15}}
+        ($(broker)-(-1,3.8)$)
+        node[anchor=east,Firebrick3]
+        {\textbf{X}}
+        ;
+
+    \draw[->]
+        ($(broker)-(0,4.5)$)
+        --
+        node[midway,above] {\small\texttt{PUBLISH,Pkt ID=15,DUP=1,`A'}}
+        ($(sub1)-(0,4.5)$)
+        node[draw,anchor=west,circle,fill=OliveDrab3!20,
+        inner sep=1]
+        (ok3)
+        {OK}
+        ;
+    \draw[->]
+        ($(sub1)-(0,5)$)
+        --
+        node[midway,above] {\small\texttt{PUBACK,Pkt ID=15}}
+        ($(broker)-(0,5)$)
+        ;
+
+
+
+    \draw[->]
+        ($(broker)-(0,4)$)
+        --
+        node[midway,above] {\texttt{PUBACK}}
+        ($(pub1)-(0,4)$)
+        ;
+
+
+    \foreach \i in {1,2,3}
+        \node[anchor=west,draw,fill=Firebrick4!20]
+            at (ok\i.east)
+            {process};
+
+\end{tikzpicture}

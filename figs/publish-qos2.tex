@@ -1,0 +1,72 @@
+\begin{tikzpicture}
+    \node[draw,circle,fill=DodgerBlue3!20]
+        (pub1) at (0,0) {PUB};
+
+    \node[draw,fill=yellow!20] (broker)
+        at ($(pub1)+(7,0)$) {Broker};
+
+    \draw
+        (pub1)
+        --
+        ($(pub1.south)-(0,4.5)$)
+        ;
+    \draw
+        (broker)
+        --
+        ($(broker.south)-(0,5)$)
+        ;
+
+
+    \draw[->]
+        ($(pub1)-(0,1)$)
+        --
+        node[midway,above] {\texttt{PUBLISH,Pkt ID=15,DUP=0,`A'}}
+        ($(broker)-(0,1)$)
+        ;
+
+
+    \draw[->]
+        ($(broker)-(0,2)$)
+        --
+        node[midway,above] {\texttt{PUBREC,Pkt ID=15}}
+        ($(pub1)-(0,2)$)
+        ;
+
+    \draw[->]
+        ($(pub1)-(0,3)$)
+        --
+        node[midway,above] {\texttt{PUBREL,Pkt ID=15}}
+        ($(broker)-(0,3)$)
+        ;
+
+    \draw[->]
+        ($(broker)-(0,4)$)
+        --
+        node[midway,above] {\texttt{PUBCOMP,Pkt ID=15}}
+        ($(pub1)-(0,4)$)
+        ;
+
+
+
+    \path[draw,Firebrick3,ultra thick]
+        (pub1.south west)
+        --
+        (broker.south east |- pub1.south west)
+        --
+        node[midway,anchor=west]
+        {Pkt ID=15}
+        ($(broker)-(-.3,4.3)$)
+        --
+        ($(pub1)-(.3,4.3)$)
+        --
+        cycle
+        ;
+
+
+    \draw[->]
+        ($(pub1)-(0,5)$)
+        --
+        node[midway,above] {\texttt{PUBLISH,Pkt ID=16}}
+        ($(broker)-(0,5)$)
+        ;
+\end{tikzpicture}
