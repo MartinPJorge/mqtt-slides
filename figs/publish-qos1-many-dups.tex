@@ -106,10 +106,10 @@
 
 
     \draw[->]
-        ($(broker)-(0,4)$)
-        --
-        node[midway,above] {\texttt{PUBACK}}
         ($(pub1)-(0,4)$)
+        --
+        node[midway,above] {\small\texttt{PUBLISH,Pkt ID=15,DUP=1,`A'}}
+        ($(broker)-(0,4)$)
         ;
 
 
